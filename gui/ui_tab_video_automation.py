@@ -132,6 +132,7 @@ class VideoAutomationUI(AbstractComponentUI):
                     try:
                         video_path = self.make_video(self.script, self.voice_module, self.isVertical, progress=progress)
                         file_name = video_path.split("/")[-1].split("\\")[-1]
+                        self.shortGptUI.local_url = "http://192.168.0.30:31415"
                         current_url = self.shortGptUI.share_url+"/" if self.shortGptUI.share else self.shortGptUI.local_url
                         file_url_path = f"{current_url}gradio_api/file={video_path}"
                         self.video_html = f'''
@@ -140,7 +141,7 @@ class VideoAutomationUI(AbstractComponentUI):
                                     <source src="{file_url_path}" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
-                                <a href="{file_url_path}" download="{file_name}" style="margin-top: 10px;">
+                                <a href="{ffile_url_path}" download="{file_name}" style="margin-top: 10px;">
                                     <button style="font-size: 1em; padding: 10px; border: none; cursor: pointer; color: white; background: #007bff;">Download Video</button>
                                 </a>
                             </div>'''
