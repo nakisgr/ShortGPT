@@ -46,6 +46,8 @@ class AssetComponentsUtils:
             subprocess.Popen(["open", path])
         else:
             subprocess.Popen(["xdg-open", path])
+            print(f"Videos are available at {path}")
+
 
     @classmethod
     def background_video_checkbox(cls):
