@@ -83,7 +83,7 @@ docker run -p 31415:31415 --env-file .env short_gpt_docker:latest
 ```
 ## Running runShortGPT.py Web Interface
 
-2. After running the script, a Gradio interface should open at your local host on port 31415 (http://localhost:31415)
+2. After running the script, a Gradio interface should open at your local host on port 31415 (http://192.168.0.30:31415)
  
 
 ## Framework overview
