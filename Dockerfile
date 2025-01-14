@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     ffmpeg \
     imagemagick \
+    xdg-utils \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container to /app

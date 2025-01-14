@@ -69,7 +69,7 @@ def open_file(filepath):
         return infile.read()
 
 
-def llm_completion(chat_prompt="", system="", temp=0.7, model="gpt-4o-mini", max_tokens=30000, remove_nl=True, conversation=None):
+def llm_completion(chat_prompt="", system="", temp=0.7, model="gpt-4o-mini", max_tokens=6000, remove_nl=True, conversation=None):
     openai.api_key = ApiKeyManager.get_api_key("OPENAI_API_KEY")
     max_retry = 5
     retry = 0
