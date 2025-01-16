@@ -40,14 +40,23 @@ class AssetComponentsUtils:
 
     @classmethod
     def start_file(cls, path):
-        print(f"[DEBUG] start_file called with path={path!r}")
-        if platform.system() == "Windows":
-            os.startfile(path)
-        elif platform.system() == "Darwin":
-            subprocess.Popen(["open", path])
+        print(f"[DEBUG] start_file called with path='{path}'")
+
+        # Detect if we're in Docker or not:
+        in_docker = bool(os.environ.get("DOCKER_ENV"))
+
+        if not in_docker:
+            # Only attempt to open if on a typical desktop environment
+            if platform.system() == "Windows":
+                os.startfile(path)
+            elif platform.system() == "Darwin":
+                subprocess.Popen(["open", path])
+            else:
+                subprocess.Popen(["xdg-open", path])  # Will fail if no GUI or text browser
         else:
-            subprocess.Popen(["xdg-open", path])
-        print(f"Videos are available at {path}")
+            print("Skipping xdg-open because we're in Docker (headless).")
+
+        print(f"Videos are available at: {path}")
 
 
     @classmethod
