@@ -65,12 +65,29 @@ class ShortAutomationUI(AbstractComponentUI):
                 videos_html_output = gr.HTML("<p>No videos yet.</p>")
                 output = gr.HTML('<div style="min-height: 80px;"></div>')
 
+                delete_video_dropdown = gr.Dropdown(choices=[], label="Select a video to delete", interactive=True)
+                delete_video_button = gr.Button("Delete Selected Video")
+
+                # Populate dropdown choices dynamically
+                def update_video_choices():
+                    folder_path = os.path.abspath("videos/")
+                    video_files = [f for f in os.listdir(folder_path) if f.lower().endswith(".mp4")]
+                    return gr.update(choices=video_files)
+
             # Connect the button to show_all_videos_in_folder
             show_all_videos_button.click(
                 fn=self.show_all_videos_in_folder,
                 inputs=[],
                 outputs=videos_html_output
             )
+
+            show_all_videos_button.click(update_video_choices, inputs=[], outputs=[delete_video_dropdown])
+
+            delete_video_button.click(
+                    fn=self.delete_video,
+                    inputs=[delete_video_dropdown],
+                    outputs=[videos_html_output, delete_video_dropdown]
+                )
 
             video_folder.click(lambda _: AssetComponentsUtils.start_file(os.path.abspath("videos/")))
 
@@ -219,3 +236,21 @@ class ShortAutomationUI(AbstractComponentUI):
             embedHTML = "<p>No .mp4 files found in the folder!</p>"
 
         return embedHTML
+
+    def delete_video(self, video_name):
+        """
+        Deletes the specified video from the videos folder.
+        """
+        folder_path = os.path.abspath("videos/")
+        video_path = os.path.join(folder_path, video_name)
+
+        if os.path.exists(video_path):
+            try:
+                os.remove(video_path)
+                return f"Video '{video_name}' deleted successfully.", self.show_all_videos_in_folder()
+            except Exception as e:
+                error_msg = f"Error deleting video '{video_name}': {e}"
+                print(error_msg)
+                return error_msg, self.show_all_videos_in_folder()
+        else:
+            return f"Video '{video_name}' not found.", self.show_all_videos_in_folder()
