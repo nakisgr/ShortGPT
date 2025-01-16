@@ -177,33 +177,28 @@ class ShortAutomationUI(AbstractComponentUI):
         raise gr.Error(f"Short type does not have a valid short engine: {short_type}")
 
     def show_all_videos_in_folder(self):
-        # You can adjust this to your actual folder
-        folder_path = os.path.abspath("videos/")  # or "/app/videos"
-        
-        # For your Docker environment, you might reuse your "current_url" logic
-        # if you want to embed them like you do in create_short().
-        self.shortGptUI.local_url = "http://192.168.0.30:31415"
-        current_url = (
-            self.shortGptUI.share_url + "/" 
-            if getattr(self.shortGptUI, "share", False) 
-            else getattr(self.shortGptUI, "local_url", "http://192.168.0.30:31415")
-        )
-        
-        # List all .mp4 files
+        # Define the folder containing videos
+        folder_path = os.path.abspath("videos/")
+
+        # Force the current URL to use 192.168.0.30
+        base_url = "http://192.168.0.30:31415"
+
+        # List all .mp4 files in the folder
         video_files = [
             f for f in os.listdir(folder_path)
             if f.lower().endswith(".mp4")
         ]
-        
-        # Build HTML string
+
+        # Build HTML string to display videos
         embedHTML = '<div style="display: flex; overflow-x: auto; gap: 20px;">'
         for filename in video_files:
-            # Absolute path inside container
+            # Absolute path to the video file
             full_path = os.path.join(folder_path, filename)
-            
-            # Convert to a "served" URL (like in create_short)
-            file_url_path = f"{current_url}gradio_api/file={full_path}"
-            
+
+            # Build the served URL for each video
+            file_url_path = f"{base_url}/gradio_api/file={full_path}"
+
+            # Embed the video and download button
             embedHTML += f'''
                 <div style="display: flex; flex-direction: column; align-items: center;">
                     <video width="250" height="500" style="max-height: 100%;" controls>
@@ -218,7 +213,8 @@ class ShortAutomationUI(AbstractComponentUI):
                 </div>
             '''
         embedHTML += '</div>'
-        
+
+        # Fallback message if no videos are found
         if not video_files:
             embedHTML = "<p>No .mp4 files found in the folder!</p>"
 
