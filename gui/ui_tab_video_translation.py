@@ -131,7 +131,11 @@ class VideoTranslationUI(AbstractComponentUI):
         folder_path = os.path.abspath("videos/")  # or "/app/videos"
         
         self.shortGptUI.local_url = "http://192.168.0.30:31415"
-        current_url = self.shortGptUI.share_url+"/" if self.shortGptUI.share else self.shortGptUI.local_url
+        current_url = (
+            self.shortGptUI.share_url + "/" 
+            if getattr(self.shortGptUI, "share", False) 
+            else getattr(self.shortGptUI, "local_url", "http://192.168.0.30:31415")
+        )
         
         # List all .mp4 files
         video_files = [
