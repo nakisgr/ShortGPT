@@ -17,13 +17,14 @@ from shortGPT.config.languages import (EDGE_TTS_VOICENAME_MAPPING,
 from shortGPT.engine.facts_short_engine import FactsShortEngine
 from shortGPT.engine.reddit_short_engine import RedditShortEngine
 class ShortAutomationUI(AbstractComponentUI):
-    self.shortGptUI.local_url = "http://192.168.0.30:31415"
 
     def __init__(self, shortGptUI: gr.Blocks):
         self.shortGptUI = shortGptUI
         self.embedHTML = '<div style="display: flex; overflow-x: auto; gap: 20px;">'
         self.progress_counter = 0
         self.short_automation = None
+        self.shortGptUI.local_url = "http://192.168.0.30:31415"
+
 
     def create_ui(self):
         with gr.Row(visible=False) as short_automation:

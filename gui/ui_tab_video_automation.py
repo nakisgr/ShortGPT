@@ -46,6 +46,8 @@ class VideoAutomationUI(AbstractComponentUI):
         self.video_folder = None
         self.errorHTML = None
         self.outHTML = None
+        self.shortGptUI.local_url = "http://192.168.0.30:31415"
+
 
     def is_key_missing(self):
         openai_key = ApiKeyManager.get_api_key("OPENAI_API_KEY")
@@ -132,7 +134,6 @@ class VideoAutomationUI(AbstractComponentUI):
                     try:
                         video_path = self.make_video(self.script, self.voice_module, self.isVertical, progress=progress)
                         file_name = video_path.split("/")[-1].split("\\")[-1]
-                        self.shortGptUI.local_url = "http://192.168.0.30:31415"
                         current_url = self.shortGptUI.share_url+"/" if self.shortGptUI.share else self.shortGptUI.local_url
                         file_url_path = f"{current_url}gradio_api/file={video_path}"
                         self.video_html = f'''
