@@ -56,7 +56,19 @@ class ShortAutomationUI(AbstractComponentUI):
 
                 generation_error = gr.HTML(visible=False)
                 video_folder = gr.Button("📁", visible=True)
+                # 1) The new button:
+                show_all_videos_button = gr.Button("Show All MP4 Videos")
+
+                # 2) An HTML output to display them:
+                videos_html_output = gr.HTML("<p>No videos yet.</p>")
                 output = gr.HTML('<div style="min-height: 80px;"></div>')
+
+            # Connect the button to show_all_videos_in_folder
+            show_all_videos_button.click(
+                fn=self.show_all_videos_in_folder,
+                inputs=[],
+                outputs=videos_html_output
+            )
 
             video_folder.click(lambda _: AssetComponentsUtils.start_file(os.path.abspath("videos/")))
 
@@ -162,3 +174,50 @@ class ShortAutomationUI(AbstractComponentUI):
                 facts_subject = short_type
             return FactsShortEngine(voice_module, facts_type=facts_subject, background_video_name=background_video, background_music_name=background_music, num_images=numImages, watermark=watermark, language=language)
         raise gr.Error(f"Short type does not have a valid short engine: {short_type}")
+
+    def show_all_videos_in_folder(self):
+        # You can adjust this to your actual folder
+        folder_path = os.path.abspath("videos/")  # or "/app/videos"
+        
+        # For your Docker environment, you might reuse your "current_url" logic
+        # if you want to embed them like you do in create_short().
+        current_url = (
+            self.shortGptUI.share_url + "/" 
+            if getattr(self.shortGptUI, "share", False) 
+            else getattr(self.shortGptUI, "local_url", "http://localhost:31415")
+        )
+        
+        # List all .mp4 files
+        video_files = [
+            f for f in os.listdir(folder_path)
+            if f.lower().endswith(".mp4")
+        ]
+        
+        # Build HTML string
+        embedHTML = '<div style="display: flex; overflow-x: auto; gap: 20px;">'
+        for filename in video_files:
+            # Absolute path inside container
+            full_path = os.path.join(folder_path, filename)
+            
+            # Convert to a "served" URL (like in create_short)
+            file_url_path = f"{current_url}gradio_api/file={full_path}"
+            
+            embedHTML += f'''
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <video width="250" height="500" style="max-height: 100%;" controls>
+                        <source src="{file_url_path}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <a href="{file_url_path}" download="{filename}" style="margin-top: 10px;">
+                        <button style="font-size: 1em; padding: 10px; border: none; cursor: pointer; color: white; background: #007bff;">
+                            Download {filename}
+                        </button>
+                    </a>
+                </div>
+            '''
+        embedHTML += '</div>'
+        
+        if not video_files:
+            embedHTML = "<p>No .mp4 files found in the folder!</p>"
+
+        return embedHTML
