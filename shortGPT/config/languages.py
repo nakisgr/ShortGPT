@@ -83,6 +83,7 @@ ELEVEN_SUPPORTED_LANGUAGES=[Language.ENGLISH,
     Language.FRENCH,
     Language.ARABIC,
     Language.GERMAN,
+    Language.GREEK,
     Language.POLISH,
     Language.ITALIAN,
     Language.PORTUGUESE]
