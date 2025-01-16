@@ -40,13 +40,14 @@ class AssetComponentsUtils:
 
     @classmethod
     def start_file(cls, path):
+        print(f"[DEBUG] start_file called with path={path!r}")
         if platform.system() == "Windows":
             os.startfile(path)
         elif platform.system() == "Darwin":
             subprocess.Popen(["open", path])
         else:
             subprocess.Popen(["xdg-open", path])
-            print(f"Videos are available at {path}")
+        print(f"Videos are available at {path}")
 
 
     @classmethod

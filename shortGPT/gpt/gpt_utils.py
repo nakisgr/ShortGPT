@@ -92,7 +92,7 @@ def llm_completion(chat_prompt="", system="", temp=0.7, model="gpt-4o-mini", max
                 )
             text = response.choices[0].message.content.strip()
             if remove_nl:
-                text = re.sub('\s+', ' ', text)
+                text = re.sub('\\s+', ' ', text)
             filename = '%s_llm_completion.txt' % time()
             if not os.path.exists('.logs/gpt_logs'):
                 os.makedirs('.logs/gpt_logs')

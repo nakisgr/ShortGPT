@@ -1,5 +1,5 @@
 # Use an official Python runtime as the parent image
-FROM python:3.10-bullseye
+FROM python:3.12-bullseye
 
 # Install system dependencies, including gcc and build tools
 RUN apt-get update && apt-get install -y \
