@@ -67,7 +67,7 @@ class AssetComponentsUtils:
                 choices=choices,
                 interactive=True,
                 label="Choose background video",
-                value="Music motivation"
+                value=random.choice(choices)
             )
         return cls.instance_background_video_checkbox
 
@@ -79,7 +79,7 @@ class AssetComponentsUtils:
                 choices=choices,
                 interactive=True,
                 label="Choose background music",
-                value="Walking on the beach"
+                value=random.choice(choices)
             )
         return cls.instance_background_music_checkbox
 
