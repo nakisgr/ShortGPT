@@ -182,12 +182,9 @@ class ShortAutomationUI(AbstractComponentUI):
         
         # For your Docker environment, you might reuse your "current_url" logic
         # if you want to embed them like you do in create_short().
-        current_url = (
-            self.shortGptUI.share_url + "/" 
-            if getattr(self.shortGptUI, "share", False) 
-            else getattr(self.shortGptUI, "local_url", "http://192.168.0.30:31415")
-        )
-        
+        self.shortGptUI.local_url = "http://192.168.0.30:31415"
+        current_url = self.shortGptUI.share_url+"/" if self.shortGptUI.share else self.shortGptUI.local_url
+
         # List all .mp4 files
         video_files = [
             f for f in os.listdir(folder_path)
