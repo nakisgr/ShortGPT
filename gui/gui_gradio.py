@@ -34,7 +34,7 @@ class ShortGptUI(AbstractBaseUI):
                     print("\n\n********************* STARTING SHORGPT **********************")
                     print("\nShortGPT is running here 👉 http://192.168.0.30:31415\n")
                     print("********************* STARTING SHORGPT **********************\n\n")
-        shortGptUI.queue().launch(server_port=31415, height=1000, allowed_paths=["public/","videos/","fonts/"], share=True, server_name="0.0.0.0")
+        shortGptUI.queue().launch(server_port=31415, height=1000, allowed_paths=["public/","videos/","fonts/"], share=False, server_name="0.0.0.0")
 
 
 

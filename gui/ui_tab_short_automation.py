@@ -17,6 +17,8 @@ from shortGPT.config.languages import (EDGE_TTS_VOICENAME_MAPPING,
 from shortGPT.engine.facts_short_engine import FactsShortEngine
 from shortGPT.engine.reddit_short_engine import RedditShortEngine
 class ShortAutomationUI(AbstractComponentUI):
+    self.shortGptUI.local_url = "http://192.168.0.30:31415"
+
     def __init__(self, shortGptUI: gr.Blocks):
         self.shortGptUI = shortGptUI
         self.embedHTML = '<div style="display: flex; overflow-x: auto; gap: 20px;">'
@@ -56,10 +58,9 @@ class ShortAutomationUI(AbstractComponentUI):
 
                 generation_error = gr.HTML(visible=False)
                 video_folder = gr.Button("📁", visible=True)
-                # 1) The new button:
+
                 show_all_videos_button = gr.Button("Show All MP4 Videos")
 
-                # 2) An HTML output to display them:
                 videos_html_output = gr.HTML("<p>No videos yet.</p>")
                 output = gr.HTML('<div style="min-height: 80px;"></div>')
 
@@ -117,7 +118,6 @@ class ShortAutomationUI(AbstractComponentUI):
                     self.progress_counter += 1
 
                 video_path = shortEngine.get_video_output_path()
-                self.shortGptUI.local_url = "http://192.168.0.30:31415"
                 current_url = self.shortGptUI.share_url+"/" if self.shortGptUI.share else self.shortGptUI.local_url
                 file_url_path = f"{current_url}gradio_api/file={video_path}"
                 file_name = video_path.split("/")[-1].split("\\")[-1]
@@ -184,7 +184,7 @@ class ShortAutomationUI(AbstractComponentUI):
         current_url = (
             self.shortGptUI.share_url + "/" 
             if getattr(self.shortGptUI, "share", False) 
-            else getattr(self.shortGptUI, "local_url", "http://localhost:31415")
+            else getattr(self.shortGptUI, "local_url", "http://192.168.0.30:31415")
         )
         
         # List all .mp4 files
